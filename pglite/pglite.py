@@ -239,6 +239,9 @@ def main():
     elif sys.argv[1] == "psql":
         check_cluster() or die("Cluster not present")
         psql(sys.argv[2:])
+    else:
+        print_usage()
+        exit(1)
 
 if __name__ == '__main__':
     main()
