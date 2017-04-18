@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pglite',
-    version='1.0.1',
+    version='1.0.2',
     description="PostgreSQLite",
     long_description="PostgreSQLite - a simple postgresql cluster",
     classifiers=[
