@@ -123,7 +123,7 @@ def list_db():
     start_cluster()
     c = read_config()
     sql = "select datname from pg_database where datname not in ('template0', 'template1', 'postgres')"
-    out, err = subprocess.Popen([os.path.join(os.path.dirname(c['pg_ctl_path']), "psql"), "-h", "localhost", "-p", c['port'], "postgres", "-t", "-c", sql], stdout = subprocess.PIPE).communicate()
+    out, err = subprocess.Popen([os.path.join(os.path.dirname(c['pg_ctl_path']), "psql"), "-h", "localhost", "-p", c['port'], "-t", "-c", sql, "postgres"], stdout = subprocess.PIPE).communicate()
     return [x.strip() for x in out.split('\n')[:-2]]
 
 def export_db(db_name, dump_file):
