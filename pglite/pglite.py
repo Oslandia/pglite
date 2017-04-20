@@ -24,6 +24,7 @@ def write_config(c_dict):
     c.add_section("cluster")
     for k, v in c_dict.items():
         c.set("cluster", k, v)
+    c.add_section("environment")
     with open(PGLITE_DB_CONF, 'wb') as configfile:
         c.write(configfile)
 
@@ -31,6 +32,14 @@ def read_config():
     c = ConfigParser.ConfigParser()
     c.read(PGLITE_DB_CONF)
     return dict(c.items("cluster"))
+
+def read_environement():
+    c = ConfigParser.ConfigParser()
+    c.read(PGLITE_DB_CONF)
+    env = dict(os.environ)
+    for k, v in c.items("environment"):
+        env[k] = v
+    return env
 
 def check_cluster():
     """Check if db exists"""
@@ -50,7 +59,7 @@ def find_pg_ctl():
                  os.path.join(os.environ["ProgramFiles"], "PostgreSQL", "9.4", "bin", "pg_ctl.exe")]
     for p in paths:
         if os.path.isfile(p):
-            print("Found pg_ctl at " + p)
+            #print("Found pg_ctl at " + p)
             return p
     return None
 
@@ -61,7 +70,7 @@ def init_cluster(pg_ctl_path=None):
     """
     if check_cluster():
         # nothing to do
-        print("Cluster already present")
+        #print("Cluster already present")
         return
     if pg_ctl_path is None:
         pg_ctl_path = find_pg_ctl() or die("Can't find pg_ctl")
@@ -90,12 +99,13 @@ def start_cluster():
         # nothing to do
         return
     c = read_config()
-    subprocess.Popen([c['pg_ctl_path'], "start", "-w", "-D", PGLITE_DB_PGDATA, "-l", os.path.join(PGLITE_DB_DIR, "postgresql.log")]).communicate()
+    subprocess.Popen([c['pg_ctl_path'], "start", "-w", "-D", PGLITE_DB_PGDATA, "-l", os.path.join(PGLITE_DB_DIR, "postgresql.log")],
+        env=read_environement()).communicate()
 
 def stop_cluster():
     if not is_started():
         # nothing to do
-        print("DB already stopped")
+        #print("DB already stopped")
         return
     c = read_config()
     subprocess.Popen([c['pg_ctl_path'], "stop", "-D", PGLITE_DB_PGDATA]).communicate()
@@ -106,7 +116,7 @@ def cluster_params():
 
 def is_started():
     c = read_config()
-    out, err = subprocess.Popen([c['pg_ctl_path'], "status", "-D", PGLITE_DB_PGDATA], stdout=subprocess.PIPE).communicate()
+    out, err = subprocess.Popen([c['pg_ctl_path'], "status", "-D", PGLITE_DB_PGDATA], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE).communicate()
     return out.find("PID") != -1
 
 def create_db(db_name):
@@ -123,7 +133,7 @@ def list_db():
     start_cluster()
     c = read_config()
     sql = "select datname from pg_database where datname not in ('template0', 'template1', 'postgres')"
-    out, err = subprocess.Popen([os.path.join(os.path.dirname(c['pg_ctl_path']), "psql"), "-h", "localhost", "-p", c['port'], "-t", "-c", sql, "postgres"], stdout = subprocess.PIPE).communicate()
+    out, err = subprocess.Popen([os.path.join(os.path.dirname(c['pg_ctl_path']), "psql"), "-h", "localhost", "-p", c['port'], "-t", "-c", sql, "postgres"], stdout = subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE).communicate()
     return [x.strip() for x in out.split('\n')[:-2]]
 
 def export_db(db_name, dump_file):
@@ -147,7 +157,7 @@ def import_db(dump_file, db_name):
     import zlib
     zd = zlib.decompressobj()
     c = read_config()
-    p = subprocess.Popen([os.path.join(os.path.dirname(c['pg_ctl_path']), "psql"), "-h", "localhost", "-p", c['port'], "-d", db_name], stdin = subprocess.PIPE)
+    p = subprocess.Popen([os.path.join(os.path.dirname(c['pg_ctl_path']), "psql"), "-h", "localhost", "-p", c['port'], "-d", db_name], stdin = subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
     with open(dump_file, "rb") as fi:
         for chunk in iter(lambda: fi.read(2048), ''):
             p.stdin.write(zd.decompress(chunk))
