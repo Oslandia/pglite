@@ -42,7 +42,7 @@ def read_environement():
     env = dict(os.environ)
     # look for a global config file for environment variables
     paths = ['/etc']
-    if os.environ.has_key("OSGEO4W_ROOT"):
+    if "OSGEO4W_ROOT" in os.environ:
         paths.append(os.path.join(os.environ["OSGEO4W_ROOT"], 'etc'))
     paths.append(os.path.abspath(os.path.dirname(__file__)))
     for p in paths:
@@ -51,7 +51,6 @@ def read_environement():
             c = ConfigParser.ConfigParser()
             c.read(f)
             for k, v in c.items("environment"):
-                print(k,"=",v)
                 env[k] = v
     return env
 
@@ -131,7 +130,7 @@ def cluster_params():
 def is_started():
     c = read_config()
     out, err = subprocess.Popen([c['pg_ctl_path'], "status", "-D", PGLITE_DB_PGDATA], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE).communicate()
-    return out.find("PID") != -1
+    return str(out).find("PID") != -1
 
 def create_db(db_name):
     start_cluster()
