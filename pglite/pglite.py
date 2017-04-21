@@ -74,7 +74,7 @@ def init_cluster(pg_ctl_path=None):
         return
     if pg_ctl_path is None:
         pg_ctl_path = find_pg_ctl() or die("Can't find pg_ctl")
-    subprocess.Popen([pg_ctl_path, "init", "-D", PGLITE_DB_PGDATA, "-s"]).communicate()
+    subprocess.Popen([os.path.join(os.path.dirname(pg_ctl_path), "initdb"), "-D", PGLITE_DB_PGDATA, "-EUTF8"]).communicate()
 
     # modify postgresql.conf (append some lines)
     port = PGLITE_DEFAULT_PORT
