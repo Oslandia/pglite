@@ -3,7 +3,10 @@
 from __future__ import print_function
 import os
 import sys
-import ConfigParser
+if sys.version_info.major == 3:
+    import configparser as ConfigParser
+else:
+    import ConfigParser
 import subprocess
 
 # global configuration file
