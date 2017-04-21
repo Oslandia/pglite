@@ -6,6 +6,8 @@ import sys
 import ConfigParser
 import subprocess
 
+# global configuration file
+PGLITE_CONF = 'pglite.conf'
 # base directory
 PGLITE_DB_DIR = os.path.join(os.path.expanduser("~"), ".pglite")
 # configuration file
@@ -34,11 +36,20 @@ def read_config():
     return dict(c.items("cluster"))
 
 def read_environement():
-    c = ConfigParser.ConfigParser()
-    c.read(PGLITE_DB_CONF)
     env = dict(os.environ)
-    for k, v in c.items("environment"):
-        env[k] = v
+    # look for a global config file for environment variables
+    paths = ['/etc']
+    if os.environ.has_key("OSGEO4W_ROOT"):
+        paths.append(os.path.join(os.environ["OSGEO4W_ROOT"], 'etc'))
+    paths.append(os.path.abspath(os.path.dirname(__file__)))
+    for p in paths:
+        f = os.path.join(p, PGLITE_CONF)
+        if os.path.isfile(f):
+            c = ConfigParser.ConfigParser()
+            c.read(f)
+            for k, v in c.items("environment"):
+                print(k,"=",v)
+                env[k] = v
     return env
 
 def check_cluster():
