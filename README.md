@@ -66,7 +66,7 @@ In [4]: pglite.start_cluster()
 en attente du démarrage du serveur.... effectué
 serveur démarré
 
-In [5]: con = psycopg2.connect('host=localhost port=55432 dbname=postgres')
+In [5]: con = psycopg2.connect(pglite.cluster_params() + " dbname=postgres")
 In [6]: cur=con.cursor()
 In [7]: cur.execute("""select version()""")
 In [8]: rows = cur.fetchall()
