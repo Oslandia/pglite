@@ -34,9 +34,9 @@ this "local" cluster with a connection on a local TCP port.
 
 ## Example
 
-This example runs on Ubuntu 17.10, but you should be able to reproduce on various environment, including Windows.
+This example runs on Ubuntu 17.10, but you should be able to reproduce on various environments, including Windows.
 First install the environment. You will need an existing PostgreSQL installation.
-Then we install pglite and psycopg2 modules in a virtualenv Python environment.
+Then we install pglite and psycopg2 modules in a virtual Python environment.
 
 ```bash
 sudo apt install postgresql-9.6
