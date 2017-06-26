@@ -65,6 +65,8 @@ def find_pg_ctl():
                  '/usr/lib/postgresql/9.5/bin/pg_ctl',
                  '/usr/lib/postgresql/9.4/bin/pg_ctl',
                  '/usr/lib/postgresql/9.3/bin/pg_ctl']
+    elif sys.platform.startswith('freebsd'):
+        paths = [sys.exec_prefix+'/bin/pg_ctl']
     else: # Windows
         paths = [ os.path.join(os.environ["OSGEO4W_ROOT"], "bin", "pg_ctl.exe"),
                   os.path.join(os.environ["ProgramFiles"], "PostgreSQL", "9.6", "bin", "pg_ctl.exe"),
@@ -199,7 +201,7 @@ def print_cluster_status():
         else:
             print("Stopped")
     else:
-        print("DB       \tAbsent")        
+        print("DB       \tAbsent")
 
 def print_usage():
     print("PGLite management tool. Commands:\n")
@@ -215,7 +217,7 @@ def print_usage():
     print("import file db_name\tCreate a new database and import data from the dump file")
     print("psql\t\t\tLaunch a psql shell on the cluster")
 
-        
+
 def main():
     if len(sys.argv) < 2 or sys.argv[1] == '--help' or sys.argv[1] == 'help' or sys.argv[1] == '-h':
         print_usage()
@@ -268,4 +270,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-            
+
