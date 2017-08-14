@@ -19,7 +19,7 @@ PGLITE_DB_CONF = os.path.join(PGLITE_DB_DIR, "db.conf")
 PGLITE_DB_PGDATA = os.path.join(PGLITE_DB_DIR, "pg_data")
 # don't export tables in _tempus_import
 PGLITE_EXTRA_DUMP_OPTIONS = ["-N", "_tempus_import"]
-PGLITE_DEFAULT_PORT = 55432
+PGLITE_DEFAULT_PORT = "55432"
 
 def die(msg):
     raise RuntimeError(msg)
@@ -30,7 +30,7 @@ def write_config(c_dict):
     for k, v in c_dict.items():
         c.set("cluster", k, v)
     c.add_section("environment")
-    with open(PGLITE_DB_CONF, 'wb') as configfile:
+    with open(PGLITE_DB_CONF, 'w') as configfile:
         c.write(configfile)
 
 def read_config():
