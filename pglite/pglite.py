@@ -124,13 +124,17 @@ def start_cluster():
         creationflags = flags,
         env=read_environement()).communicate()    
 
-def stop_cluster():
+def stop_cluster(shutdown_mode="fast"):
+    """
+    shutdown_mode = smart, fast or immediate
+    """
     if not is_started():
         # nothing to do
         #print("DB already stopped")
         return
     c = read_config()
-    subprocess.Popen([c['pg_ctl_path'], "stop", "-D", PGLITE_DB_PGDATA]).communicate()
+    print("Shutting down in {} mode ...".format(shutdown_mode))
+    subprocess.Popen([c['pg_ctl_path'], "stop", "-D", PGLITE_DB_PGDATA, "-m", shutdown_mode]).communicate()
 
 def cluster_params():
     c = read_config()
@@ -224,7 +228,7 @@ def print_usage():
     print("reset\t\t\tReset the cluster")
     print("status\t\t\tPrint the status of the cluster")
     print("start\t\t\tStart the cluster")
-    print("stop\t\t\tStop the cluster")
+    print("stop [mode]\t\tStop the cluster (mode=smart|fast|immediate)")
     print("create db_name\t\tCreate a database")
     print("drop db_name\t\tDrop a database")
     print("list\t\t\tList databases")
@@ -251,8 +255,11 @@ def main():
         check_cluster() or die("Cluster not present")
         start_cluster()
     elif sys.argv[1] == "stop":
+        shutdown_mode = "fast"
+        if len(sys.argv) > 2:
+            shutdown_mode = sys.argv[2]
         check_cluster() or die("Cluster not present")
-        stop_cluster()
+        stop_cluster(shutdown_mode)
     elif sys.argv[1] == "list":
         check_cluster() or die("Cluster not present")
         print("\n".join(list_db()))
