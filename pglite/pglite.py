@@ -116,8 +116,13 @@ def start_cluster():
         # nothing to do
         return
     c = read_config()
+    flags = 0
+    if sys.platform == "win32":
+        flags = 0x08000000 # CREATE_NO_WINDOW
+        print("Starting PostgreSQL ...")
     subprocess.Popen([c['pg_ctl_path'], "start", "-w", "-D", PGLITE_DB_PGDATA, "-l", os.path.join(PGLITE_DB_DIR, "postgresql.log")],
-        env=read_environement()).communicate()
+        creationflags = flags,
+        env=read_environement()).communicate()    
 
 def stop_cluster():
     if not is_started():
