@@ -138,8 +138,12 @@ def cluster_params():
 
 def is_started():
     c = read_config()
-    out, err = subprocess.Popen([c['pg_ctl_path'], "status", "-D", PGLITE_DB_PGDATA], stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE).communicate()
-    return str(out).find("PID") != -1
+    out, err = subprocess.Popen([c['pg_ctl_path'], "status", "-D", PGLITE_DB_PGDATA],
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.PIPE,
+                                stdin=subprocess.PIPE,
+                                universal_newlines=True).communicate()
+    return out.find("PID") != -1
 
 def create_db(db_name):
     start_cluster()
@@ -155,7 +159,11 @@ def list_db():
     start_cluster()
     c = read_config()
     sql = "select datname from pg_database where datname not in ('template0', 'template1', 'postgres')"
-    out, err = subprocess.Popen([os.path.join(os.path.dirname(c['pg_ctl_path']), "psql"), "-h", "localhost", "-p", c['port'], "-t", "-c", sql, "postgres"], stdout = subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE).communicate()
+    out, err = subprocess.Popen([os.path.join(os.path.dirname(c['pg_ctl_path']), "psql"), "-h", "localhost", "-p", c['port'], "-t", "-c", sql, "postgres"],
+                                stdout = subprocess.PIPE,
+                                stderr=subprocess.PIPE,
+                                stdin=subprocess.PIPE,
+                                universal_newlines=True).communicate()
     return [x.strip() for x in out.split('\n')[:-2]]
 
 def export_db(db_name, dump_file):
