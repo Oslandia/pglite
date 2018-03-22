@@ -177,11 +177,13 @@ def export_db(db_name, dump_file):
     c = read_config()
     a = [os.path.join(os.path.dirname(c['pg_ctl_path']), "pg_dump"), "-h", "localhost", "-p", c['port'], db_name, "-O", "-x"]
     a += PGLITE_EXTRA_DUMP_OPTIONS
-    p = subprocess.Popen(a, stdout = subprocess.PIPE)
+    p = subprocess.Popen(a, stdout = subprocess.PIPE, stderr = subprocess.PIPE, stdin = subprocess.PIPE)
+    p.stdin.close()
     with open(dump_file, "wb") as fo:
         for line in p.stdout:
             fo.write(zc.compress(line))
         fo.write(zc.flush())
+    p.wait()
 
 def import_db(dump_file, db_name):
     start_cluster()
