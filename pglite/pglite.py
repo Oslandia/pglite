@@ -175,7 +175,7 @@ def export_db(db_name, dump_file):
     import zlib
     zc = zlib.compressobj()
     c = read_config()
-    a = [os.path.join(os.path.dirname(c['pg_ctl_path']), "pg_dump"), "-h", "localhost", "-p", c['port'], db_name, "-O", "-x"]
+    a = [os.path.join(os.path.dirname(c['pg_ctl_path']), "pg_dump"), "-h", "localhost", "-p", c['port'], "-d", db_name, "-O", "-x"]
     a += PGLITE_EXTRA_DUMP_OPTIONS
     p = subprocess.Popen(a, stdout = subprocess.PIPE, stderr = subprocess.PIPE, stdin = subprocess.PIPE)
     p.stdin.close()
