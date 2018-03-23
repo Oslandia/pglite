@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from setuptools import setup, find_packages
+import sys
 
 setup(
     name='pglite',
@@ -29,8 +30,9 @@ setup(
     extras_require={
         "develop": ()
     },
+    scripts=['script/pglite'] if sys.platform.startswith('linux') else ['script/pglite.bat']
 
-    entry_points=dict(console_scripts=[
-        'pglite=pglite.pglite:main',
-    ]),
+#    entry_points=dict(console_scripts=[
+#        'pglite=pglite.pglite:main',
+#    ]),
 )
