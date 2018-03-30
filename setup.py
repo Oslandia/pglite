@@ -30,7 +30,7 @@ setup(
     extras_require={
         "develop": ()
     },
-    scripts=['script/pglite'] if sys.platform.startswith('linux') else ['script/pglite.bat']
+    scripts=['script/pglite.bat'] if sys.platform.startswith('win') else ['script/pglite']
 
 #    entry_points=dict(console_scripts=[
 #        'pglite=pglite.pglite:main',
