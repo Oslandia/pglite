@@ -5,7 +5,7 @@ import sys
 
 setup(
     name='pglite',
-    version='1.0.8',
+    version='1.0.9',
     description="PostgreSQLite",
     long_description="PostgreSQLite - a simple postgresql cluster",
     classifiers=[
