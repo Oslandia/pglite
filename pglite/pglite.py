@@ -66,6 +66,7 @@ def find_pg_ctl():
                  '/usr/lib/postgresql/9.5/bin/pg_ctl',
                  '/usr/lib/postgresql/9.4/bin/pg_ctl',
                  '/usr/lib/postgresql/9.3/bin/pg_ctl']
+        paths += [os.path.join(path, 'pg_ctl') for path in os.environ['PATH'].split(':')]
     elif sys.platform.startswith('freebsd'):
         paths = [sys.exec_prefix+'/bin/pg_ctl']
     else: # Windows
