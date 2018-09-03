@@ -5,7 +5,7 @@ import sys
 
 setup(
     name='pglite',
-    version='1.0.9',
+    version='1.0.10',
     description="PostgreSQLite",
     long_description="PostgreSQLite - a simple postgresql cluster",
     classifiers=[
@@ -30,7 +30,7 @@ setup(
     extras_require={
         "develop": ()
     },
-    scripts=['script/pglite.bat'] if sys.platform.startswith('win') else ['script/pglite']
+    scripts=['script/pglite.bat', 'script/pglite']
 
 #    entry_points=dict(console_scripts=[
 #        'pglite=pglite.pglite:main',
