@@ -196,7 +196,7 @@ def import_db(dump_file, db_name):
     c = read_config()
     p = subprocess.Popen([os.path.join(os.path.dirname(c['pg_ctl_path']), "psql"), "-h", "localhost", "-p", c['port'], "-d", db_name], stdin = subprocess.PIPE, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
     with open(dump_file, "rb") as fi:
-        for chunk in iter(lambda: fi.read(2048), ''):
+        for chunk in iter(lambda: fi.read(2048), b''):
             p.stdin.write(zd.decompress(chunk))
         p.stdin.write(zd.flush())
         p.stdin.close()
