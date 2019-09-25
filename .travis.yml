@@ -1,0 +1,14 @@
+language: python
+python: 3.6
+
+script: /bin/true
+
+deploy:
+  provider: pypi
+  distributions: "sdist"
+  user: oslandia
+  password:
+    secure: Gf2i73bCraX3492PdtyMbZsGtY/lb2uGlrZ+WnSttnk2wcfoTNG7WJsFneT/W/Fz4BJDQkkx0rZ+t/YaW98Mswg+wXuTQyNq5NZKUu2gex7feWlBfHy9lc4JpGFhy+4Lx5WjJ3SZog7mWiLPOoya2XO8FOdtzPdHY/rFk4Oaky82jthLmhWzHF2CHn4JNp8sJx3R9urm124AWjJ9J5qkdMm3jPACs2X0XBjzC/XRf7Q++TxrgLGc2ZDW7gkx4oYAVhohYFz4d6VP6FX8XzEXfETCXSsN3zPy76kU1gJ4lIb7OOws3uRCbhQ/kI3oXE96sYwp/FagTZnQGnSGQ/RwH+A/zLbXRQZHSds1N4aOFQcZ7ERPYHaa7gpyuEaa/xSBUGl8vKdZtunU7RGTOGlPDLRUOMeDjhGVnH5EDHkoiHTGJ6ZPPry+Q5MJAhGVqvttrZVm3EKEJmFdUPlAXaZyeGlIDjHOr+HfKzfTSR4WZBj0/iGlKI8WASmWWNMD2oBNW+FcdUe9jOlSuSMlWNJlITlZYyVP7e+Pl8s9LP4xoefoSK8qlvmiJHh8lPvq9QIRuUmLIFbj06n9h2JpmG8Tk9MknwJNRkKSeSSY7OAnW0ahG3+Js4o110ikIXUwT6nSrgu6iMi2Id2kh3zm+FTSaO5tyqNt6+sk8eANQI7kijo=
+  on:
+    tags: true
+    repo: Oslandia/pglite
