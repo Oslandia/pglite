@@ -61,7 +61,8 @@ def check_cluster():
 def find_pg_ctl():
     """Find the pg_ctl executable in common places"""
     if sys.platform.startswith('linux'):
-        paths = ['/usr/lib/postgresql/10/bin/pg_ctl',
+        paths = ['/usr/lib/postgresql/11/bin/pg_ctl',
+                 '/usr/lib/postgresql/10/bin/pg_ctl',
                  '/usr/lib/postgresql/9.6/bin/pg_ctl',
                  '/usr/lib/postgresql/9.5/bin/pg_ctl',
                  '/usr/lib/postgresql/9.4/bin/pg_ctl',
@@ -71,6 +72,7 @@ def find_pg_ctl():
         paths = [sys.exec_prefix+'/bin/pg_ctl']
     else: # Windows
         paths = [ os.path.join(os.environ["OSGEO4W_ROOT"], "bin", "pg_ctl.exe"),
+                  os.path.join(os.environ["ProgramFiles"], "PostgreSQL", "11", "bin", "pg_ctl.exe"),
                   os.path.join(os.environ["ProgramFiles"], "PostgreSQL", "10", "bin", "pg_ctl.exe"),
                   os.path.join(os.environ["ProgramFiles"], "PostgreSQL", "9.6", "bin", "pg_ctl.exe"),
                   os.path.join(os.environ["ProgramFiles"], "PostgreSQL", "9.5", "bin", "pg_ctl.exe"),
